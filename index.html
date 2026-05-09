@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Trône de Fer — Créateur de Personnage</title>
+
+  <!-- Polices -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-wrapper">
+
+  <header class="app-header">
+    <div class="app-header-titles">
+      <h1>Le Trône de Fer</h1>
+      <p>Créateur de Fiche de Personnage — Règles officielles JdR</p>
+    </div>
+    <!-- Boutons d'action globaux : sauvegarde et bibliothèque de personnages -->
+    <div class="app-header-actions">
+      <button class="btn btn-gold btn-sm" id="btn-enregistrer" title="Sauvegarder le personnage courant">💾 Enregistrer</button>
+      <button class="btn btn-gold btn-sm" id="btn-biblio"      title="Ouvrir la bibliothèque">📂 Bibliothèque</button>
+      <button class="btn btn-gold btn-sm" id="btn-nouveau"     title="Nouveau personnage">✨ Nouveau</button>
+    </div>
+  </header>
+
+  <!-- ============= NAVIGATION ============= -->
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="identite"><span class="tab-num">I</span>Identité</button>
+    <button class="tab-btn"        data-tab="competences"><span class="tab-num">II</span>Compétences</button>
+    <button class="tab-btn"        data-tab="specialites"><span class="tab-num">III</span>Spécialités</button>
+    <button class="tab-btn"        data-tab="attributs"><span class="tab-num">IV</span>Attributs</button>
+    <button class="tab-btn"        data-tab="equipement"><span class="tab-num">V</span>Équipement</button>
+    <button class="tab-btn"        data-tab="derivees"><span class="tab-num">VI</span>Stats Dérivées</button>
+    <button class="tab-btn"        data-tab="fiche"><span class="tab-num">VII</span>Fiche Finale</button>
+  </nav>
+
+  <!-- ============= I. IDENTITÉ ============= -->
+  <section class="section active" id="section-identite">
+    <div class="panel">
+      <div class="panel-title">Informations de Base</div>
+      <div class="form-grid">
+        <div class="field"><label>Nom du personnage</label><input type="text" id="nom" placeholder="Jon Snow…"></div>
+        <div class="field"><label>Maison Noble</label><input type="text" id="maison" placeholder="Maison Stark…"></div>
+        <div class="field"><label>Âge (Table 3-8)</label><select id="age"></select></div>
+        <div class="field"><label>Sexe</label>
+          <select id="sexe">
+            <option value="">— Choisir —</option>
+            <option value="Homme">Homme</option>
+            <option value="Femme">Femme</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="field"><label>Rôle / Archétype</label>
+          <select id="role">
+            <option value="">— Choisir —</option>
+            <option value="Combattant">Combattant</option>
+            <option value="Coquin">Coquin</option>
+            <option value="Expert">Expert</option>
+            <option value="Dirigeant">Dirigeant</option>
+            <option value="Manipulateur">Manipulateur</option>
+          </select>
+        </div>
+        <div class="field"><label>Statut de départ (2d6 — Table 3-2)</label>
+          <select id="statut_depart">
+            <option value="">— Choisir —</option>
+            <option value="2">2 — Statut 2 (homme libre, errant)</option>
+            <option value="3-4">3-4 — Statut 3 (épée lige, garde, écuyer)</option>
+            <option value="5-9">5-9 — Statut 4 (membre d'une maison, chevalier terrien)</option>
+            <option value="10-11">10-11 — Statut 5 (seigneur vassal, courtisan)</option>
+            <option value="12">12 — Statut 6 (seigneur de la maison, héritier)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Concept &amp; Histoire</div>
+      <div class="info-box">
+        Astuce : laisse-toi guider par les tables officielles ! Le bouton 🎲 lance 2d6 et propose un résultat tiré de la table correspondante. Tu peux aussi choisir librement parmi les suggestions de l'autocomplétion, ou écrire ce que tu veux.
+      </div>
+      <div class="form-grid-2">
+        <div class="field"><label>Histoire personnelle (Table 3-3)</label>
+          <div class="field-with-roll">
+            <textarea id="histoire" list="dl-histoire" placeholder="Un événement marquant qui a façonné ce personnage…"></textarea>
+            <button type="button" class="btn-roll" data-roll="histoire" title="Tirer 2d6 dans la Table 3-3">🎲</button>
+          </div>
+        </div>
+        <div class="field"><label>Objectif (Table 3-4)</label>
+          <div class="field-with-roll">
+            <textarea id="objectif" list="dl-objectif" placeholder="Ce que ce personnage désire le plus…"></textarea>
+            <button type="button" class="btn-roll" data-roll="objectif" title="Tirer 2d6 dans la Table 3-4">🎲</button>
+          </div>
+        </div>
+        <div class="field"><label>Motivation (Table 3-5)</label>
+          <div class="field-with-roll">
+            <input type="text" id="motivation" list="dl-motivation" placeholder="Pourquoi désire-t-il cet objectif ?">
+            <button type="button" class="btn-roll" data-roll="motivation" title="Tirer 2d6 dans la Table 3-5">🎲</button>
+          </div>
+        </div>
+        <div class="field"><label>Vertu (Table 3-6)</label>
+          <div class="field-with-roll">
+            <input type="text" id="vertu" list="dl-vertu" placeholder="ex. Courageux, Honnête…">
+            <button type="button" class="btn-roll" data-roll="vertu" title="Tirer 2d6 dans la Table 3-6">🎲</button>
+          </div>
+        </div>
+        <div class="field"><label>Vice (Table 3-7)</label>
+          <div class="field-with-roll">
+            <input type="text" id="vice" list="dl-vice" placeholder="ex. Colérique, Cruel…">
+            <button type="button" class="btn-roll" data-roll="vice" title="Tirer 2d6 dans la Table 3-7">🎲</button>
+          </div>
+        </div>
+        <div class="field"><label>Traits distinctifs</label><input type="text" id="traits" placeholder="Cicatrice, tic verbal, port…"></div>
+        <div class="field"><label>Habitudes</label><input type="text" id="habitudes" placeholder="Manies, comportements caractéristiques…"></div>
+      </div>
+      <!-- Datalists peuplées par ui.js depuis data/concept.js -->
+      <datalist id="dl-histoire"></datalist>
+      <datalist id="dl-objectif"></datalist>
+      <datalist id="dl-motivation"></datalist>
+      <datalist id="dl-vertu"></datalist>
+      <datalist id="dl-vice"></datalist>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Apparence Physique</div>
+      <div class="form-grid">
+        <div class="field"><label>Taille</label><input type="text" id="taille" placeholder="ex. 1m80"></div>
+        <div class="field"><label>Poids</label><input type="text" id="poids" placeholder="ex. 75 kg"></div>
+        <div class="field"><label>Couleur des yeux</label><input type="text" id="couleur_yeux"></div>
+        <div class="field"><label>Couleur des cheveux</label><input type="text" id="couleur_cheveux"></div>
+      </div>
+      <div class="form-grid-2" style="margin-top:16px">
+        <div class="field"><label>Portrait (description générale)</label><textarea id="portrait" placeholder="Allure, prestance, signe particulier…"></textarea></div>
+        <div class="field"><label>Équipement supplémentaire</label><textarea id="equipement_libre" placeholder="Possessions hors armes/armure (monture, bourse, objets personnels…)"></textarea></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Liens &amp; Maison</div>
+      <div class="form-grid-3">
+        <div class="field"><label>Alliés</label><textarea id="allies" placeholder="Personnages amis, mentors…"></textarea></div>
+        <div class="field"><label>Ennemis</label><textarea id="ennemis" placeholder="Adversaires connus, rivalités…"></textarea></div>
+        <div class="field"><label>Serments</label><textarea id="serments" placeholder="Vœux prêtés, dettes d'honneur…"></textarea></div>
+      </div>
+      <div class="form-grid-3" style="margin-top:16px">
+        <div class="field"><label>Serviteurs</label><textarea id="serviteurs" placeholder="Écuyer, dame de compagnie, garde…"></textarea></div>
+        <div class="field"><label>Armoiries</label><textarea id="armoiries" placeholder="Description de l'écu, blason…"></textarea></div>
+        <div class="field"><label>Devise</label><textarea id="devises" placeholder="Devise familiale ou personnelle…"></textarea></div>
+      </div>
+      <div class="form-grid-2" style="margin-top:16px">
+        <div class="field"><label>Notes de blessures</label><textarea id="blessures_notes" placeholder="Cicatrices, séquelles, blessures en cours…"></textarea></div>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-gold btn-sm" id="reset-btn">Réinitialiser</button>
+      <button class="btn btn-primary" data-goto-tab="competences">Étape suivante : Compétences →</button>
+    </div>
+  </section>
+
+  <!-- ============= II. COMPÉTENCES ============= -->
+  <section class="section" id="section-competences">
+    <div class="panel">
+      <div class="panel-title">Budget d'Expérience</div>
+      <div id="budget-xp-container"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Compétences (toutes débutent à Rang 2)</div>
+      <div class="info-box">
+        Coûts (Table 3-8) : Rang 3 = 10 XP · Rang 4 = 40 XP · Rang 5 = 70 XP · Rang 6 = 100 XP · Rang 7 = 130 XP.
+        Le rang max dépend de l'âge (Statut excepté). Clique sur l'icône <strong>i</strong> pour voir la description d'une compétence.
+      </div>
+      <div class="skills-grid" id="skills-grid"></div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-gold btn-sm" data-goto-tab="identite">← Retour</button>
+      <button class="btn btn-primary"     data-goto-tab="specialites">Étape suivante : Spécialités →</button>
+    </div>
+  </section>
+
+  <!-- ============= III. SPÉCIALITÉS ============= -->
+  <section class="section" id="section-specialites">
+    <div class="panel">
+      <div class="panel-title">Budget de Spécialités</div>
+      <div id="budget-specs-container"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Spécialités (clique pour activer / + et − pour ajuster les dés bonus)</div>
+      <div id="specialites-container"></div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-gold btn-sm" data-goto-tab="competences">← Retour</button>
+      <button class="btn btn-primary"     data-goto-tab="attributs">Étape suivante : Attributs →</button>
+    </div>
+  </section>
+
+  <!-- ============= IV. ATTRIBUTS (Destinée + Avantages + Défauts) ============= -->
+  <section class="section" id="section-attributs">
+    <div class="panel">
+      <div class="panel-title">Points de Destinée</div>
+      <div id="budget-pd-container"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Avantages (1 PD chacun)</div>
+      <div class="cat-filter" id="avantages-filter">
+        <button data-cat="all" class="active">Tous</button>
+        <button data-cat="competence">Compétence</button>
+        <button data-cat="destin">Destin</button>
+        <button data-cat="heritage">Héritage</button>
+        <button data-cat="martial">Martial</button>
+        <button data-cat="social">Social</button>
+      </div>
+      <div class="attribute-list" id="avantages-list"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Défauts (rapportent 1 PD)</div>
+      <div class="info-box">
+        Choisis des défauts adaptés à ton concept (Table 3-11 impose un défaut obligatoire à partir de l'âge adulte).
+        Cliquer sur <strong>i</strong> pour voir la description complète d'un avantage ou défaut.
+      </div>
+      <div class="attribute-list" id="defauts-list"></div>
+    </div>
+
+    <div class="panel" id="description-zone-panel">
+      <div class="panel-title">Description sélectionnée</div>
+      <div id="description-zone">
+        <div class="info-box">Clique sur l'icône <strong>i</strong> d'un avantage ou défaut pour voir sa description ici.</div>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-gold btn-sm" data-goto-tab="specialites">← Retour</button>
+      <button class="btn btn-primary"     data-goto-tab="equipement">Étape suivante : Équipement →</button>
+    </div>
+  </section>
+
+  <!-- ============= V. ÉQUIPEMENT ============= -->
+  <section class="section" id="section-equipement">
+    <div class="equip-grid">
+      <div class="panel">
+        <div class="panel-title">Armure (Table 9-2)</div>
+        <div class="field">
+          <label>Type d'armure</label>
+          <select id="armure-select"></select>
+        </div>
+        <div class="equip-stats">
+          <div class="stat-badge"><div class="stat-val" id="va-val">0</div><span class="stat-lbl">Valeur d'Armure</span></div>
+          <div class="stat-badge negative"><div class="stat-val" id="malus-val">0</div><span class="stat-lbl">Malus d'Armure</span></div>
+          <div class="stat-badge"><div class="stat-val" id="enc-val">0</div><span class="stat-lbl">Encombrement</span></div>
+        </div>
+
+        <div class="field" style="margin-top:16px">
+          <label>Bouclier (Table 9-3)</label>
+          <select id="bouclier-select"></select>
+        </div>
+        <div class="equip-stats" id="bouclier-stats"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Armes (Table 9-3)</div>
+        <div class="add-row">
+          <select id="arme-select"></select>
+          <button class="btn btn-gold btn-sm" id="add-arme-btn">+ Ajouter</button>
+        </div>
+        <div class="weapons-list" id="weapons-list"></div>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-gold btn-sm" data-goto-tab="attributs">← Retour</button>
+      <button class="btn btn-primary"     data-goto-tab="derivees">Étape suivante : Stats Dérivées →</button>
+    </div>
+  </section>
+
+  <!-- ============= VI. STATS DÉRIVÉES ============= -->
+  <section class="section" id="section-derivees">
+    <div class="panel">
+      <div class="panel-title">Valeurs Calculées</div>
+      <div class="derived-grid" id="derived-grid"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Récapitulatif Offensif</div>
+      <div id="attack-summary"></div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-gold btn-sm" data-goto-tab="equipement">← Retour</button>
+      <button class="btn btn-primary"     data-goto-tab="fiche">Voir la Fiche Finale →</button>
+    </div>
+  </section>
+
+  <!-- ============= VII. FICHE FINALE ============= -->
+  <section class="section" id="section-fiche">
+    <div class="panel">
+      <div class="panel-title">Fiche de Personnage</div>
+      <div id="sheet-preview"></div>
+      <p class="print-note">Utilise <kbd>Ctrl+P</kbd> (ou <kbd>⌘P</kbd>) pour imprimer cette fiche — les éléments d'interface sont automatiquement masqués.</p>
+    </div>
+    <div class="actions-row">
+      <button class="btn btn-gold btn-sm" data-goto-tab="derivees">← Retour</button>
+      <button class="btn btn-primary"     id="print-btn">🖨 Imprimer / PDF</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============= PANNEAU LATÉRAL : BIBLIOTHÈQUE ============= -->
+<!-- Cache par défaut (.is-open ajoute la classe pour glisser le panneau) -->
+<div class="drawer-overlay" id="drawer-overlay" hidden></div>
+<aside class="drawer" id="drawer-biblio" hidden aria-label="Bibliothèque de personnages">
+  <header class="drawer-header">
+    <h2>📂 Mes Personnages</h2>
+    <button class="drawer-close" id="drawer-close" aria-label="Fermer">×</button>
+  </header>
+
+  <div class="drawer-body">
+    <!-- Sera peuplé par js/main.js au chargement et à chaque modification -->
+    <div id="biblio-list" class="biblio-list">
+      <!-- Vide au chargement -->
+    </div>
+
+    <p class="biblio-empty" id="biblio-empty" hidden>
+      Aucun personnage sauvegardé pour le moment.<br>
+      Crée un personnage et clique sur 💾 Enregistrer pour le retrouver ici.
+    </p>
+  </div>
+
+  <footer class="drawer-footer">
+    <!-- Export complet (un seul fichier JSON contenant toute la bibliothèque) -->
+    <button class="btn btn-gold btn-sm" id="btn-exporter-tout">📤 Exporter tout (JSON)</button>
+    <!-- Import : on déclenche un input file caché pour ne pas alourdir l'UI -->
+    <button class="btn btn-gold btn-sm" id="btn-importer">📥 Importer un fichier</button>
+    <input type="file" id="input-import" accept="application/json,.json" hidden>
+  </footer>
+</aside>
+
+<!-- ============= COUCHE DONNÉES ============= -->
+<!-- IMPORTANT : ordre de chargement
+     qualites.js DOIT précéder armes.js et boucliers.js (qui le référencent)
+     competences.js fait du crosscheck → après armes.js et boucliers.js -->
+<script src="data/qualites.js"></script>
+<script src="data/armes.js"></script>
+<script src="data/armures.js"></script>
+<script src="data/boucliers.js"></script>
+<script src="data/deplacement.js"></script>
+<script src="data/lesions.js"></script>
+<script src="data/ages.js"></script>
+<script src="data/competences.js"></script>
+<script src="data/avantages.js"></script>
+<script src="data/defauts.js"></script>
+<script src="data/concept.js"></script>
+
+<!-- ============= COUCHE LOGIQUE ============= -->
+<script src="js/calculs.js"></script>
+<script src="js/state.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

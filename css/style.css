@@ -1,0 +1,1246 @@
+/* ============================================================
+   Le Trône de Fer — Créateur de personnage
+   Feuille de style principale.
+   Palette inspirée du livre : parchemin, or, rouge sang.
+   ============================================================ */
+
+:root {
+  --bg:           #0e0c0a;
+  --surface:      #1a1612;
+  --surface2:    #221e18;
+  --surface3:    #2a2420;
+
+  --parchment:        #e8dcc8;
+  --parchment-dark:   #c9b99a;
+
+  --gold:        #c9a84c;
+  --gold-light:  #e8c97e;
+  --gold-dark:   #6a4a10;
+
+  --red:         #8b2020;
+  --red-light:   #b03030;
+
+  --green:       #2a5a2a;
+  --green-light: #3a7a3a;
+
+  --text:        #e8dcc8;
+  --text-dim:    #9a8a72;
+  --text-mute:   #6a5d4a;
+
+  --border:      #3a3028;
+  --border-gold: #5a4a2a;
+
+  --section-bg:  rgba(30, 25, 18, 0.92);
+
+  --warn:        #e08030;
+  --error:       #e03030;
+  --ok:          #60c060;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(139, 32, 32, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(201, 168, 76, 0.05) 0%, transparent 60%);
+  color: var(--text);
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   LAYOUT GÉNÉRAL
+   ============================================================ */
+.app-wrapper { max-width: 1100px; margin: 0 auto; padding: 0 16px 60px; }
+
+.app-header {
+  text-align: center;
+  padding: 40px 0 32px;
+  border-bottom: 1px solid var(--border-gold);
+  margin-bottom: 32px;
+  position: relative;
+}
+.app-header::after {
+  content: '';
+  display: block;
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 16px auto 0;
+}
+.app-header h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2rem;
+  color: var(--gold-light);
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 40px rgba(201, 168, 76, 0.3);
+}
+.app-header p {
+  color: var(--text-dim);
+  font-style: italic;
+  margin-top: 8px;
+  font-size: 1rem;
+}
+
+/* ============================================================
+   ONGLETS
+   ============================================================ */
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 100px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 8px;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--gold-light); background: var(--surface2); }
+.tab-btn.active {
+  background: var(--surface3);
+  color: var(--gold);
+  border: 1px solid var(--border-gold);
+}
+.tab-btn .tab-num {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--red);
+  margin-bottom: 2px;
+}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.section { display: none; }
+.section.active { display: block; }
+
+.panel {
+  background: var(--section-bg);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--gold);
+  border-radius: 2px;
+  padding: 24px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.panel-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.panel-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-gold), transparent);
+}
+
+/* ============================================================
+   FORMULAIRES
+   ============================================================ */
+.form-grid    { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.form-grid-2  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid-3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.field input,
+.field select,
+.field textarea {
+  background: rgba(10, 8, 6, 0.6);
+  border: 1px solid var(--border);
+  border-bottom-color: var(--border-gold);
+  color: var(--text);
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  padding: 8px 12px;
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--gold);
+  background: rgba(20, 16, 10, 0.8);
+}
+.field select option { background: #1a1612; }
+.field textarea { resize: vertical; min-height: 80px; }
+
+/* Champ avec bouton 🎲 à droite (tirage 2d6) */
+.field-with-roll {
+  display: flex;
+  gap: 6px;
+  align-items: stretch;
+}
+.field-with-roll input,
+.field-with-roll textarea {
+  flex: 1;
+  min-width: 0;
+}
+.btn-roll {
+  flex-shrink: 0;
+  width: 38px;
+  background: var(--surface3);
+  border: 1px solid var(--border-gold);
+  color: var(--gold-light);
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.btn-roll:hover {
+  background: var(--gold-dark);
+  color: #f5e8d0;
+  transform: rotate(-15deg);
+}
+.btn-roll:active { transform: rotate(15deg); }
+
+/* ============================================================
+   COMPTEURS XP / PD
+   ============================================================ */
+.budget-bar {
+  background: var(--surface2);
+  border: 1px solid var(--border-gold);
+  border-radius: 2px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.budget-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.budget-value {
+  font-size: 1.3rem;
+  font-weight: 600;
+  font-family: 'Cinzel', serif;
+}
+.budget-value.ok    { color: var(--gold); }
+.budget-value.warn  { color: var(--warn); }
+.budget-value.over  { color: var(--error); }
+.budget-progress {
+  flex: 1;
+  min-width: 120px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.budget-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+.budget-progress-bar.over { background: linear-gradient(90deg, var(--error), #ff5050); }
+
+/* ============================================================
+   COMPÉTENCES
+   ============================================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 10px;
+}
+.skill-row {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: border-color 0.2s;
+}
+.skill-row:hover { border-color: var(--border-gold); }
+.skill-row.over-max { border-color: var(--error); background: rgba(127, 29, 29, 0.1); }
+
+.skill-name {
+  flex: 1;
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.skill-cost {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  min-width: 56px;
+  text-align: right;
+}
+.skill-cost span { color: var(--gold); font-weight: 600; }
+
+.rank-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.rank-btn {
+  width: 24px;
+  height: 24px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  cursor: pointer;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.15s;
+  line-height: 1;
+}
+.rank-btn:hover  { border-color: var(--gold); color: var(--gold); background: var(--surface3); }
+.rank-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.rank-display {
+  width: 28px;
+  height: 28px;
+  background: var(--surface3);
+  border: 1px solid var(--border-gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+
+/* Icône d'info pour afficher la description d'une compétence/avantage */
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text-mute);
+  font-size: 10px;
+  font-style: italic;
+  font-family: 'EB Garamond', serif;
+  cursor: help;
+  transition: all 0.15s;
+}
+.info-icon:hover {
+  background: var(--surface3);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Description expandable sous une ligne */
+.skill-row.expanded { flex-wrap: wrap; }
+.skill-description {
+  flex: 1 0 100%;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 2px solid var(--gold-dark);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+/* ============================================================
+   SPÉCIALITÉS
+   ============================================================ */
+.specialty-section {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+.specialty-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.specialty-header .skill-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--gold-light);
+}
+.specialty-header .skill-rang {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+}
+.specialty-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.spec-pill {
+  background: rgba(139, 32, 32, 0.12);
+  border: 1px solid rgba(139, 32, 32, 0.4);
+  color: var(--text);
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.spec-pill:hover {
+  background: rgba(139, 32, 32, 0.25);
+  border-color: var(--red-light);
+}
+.spec-pill.active {
+  background: rgba(201, 168, 76, 0.15);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+.spec-pill .spec-rank {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  width: 18px;
+  height: 18px;
+  background: var(--surface3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+}
+.spec-pill .spec-mod {
+  width: 14px;
+  height: 14px;
+  background: var(--surface);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1;
+}
+.spec-pill .spec-mod:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ============================================================
+   AVANTAGES / DÉFAUTS
+   ============================================================ */
+.attribute-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.attribute-pill {
+  background: rgba(42, 90, 42, 0.18);
+  border: 1px solid rgba(42, 90, 42, 0.45);
+  color: var(--text);
+  font-size: 0.82rem;
+  padding: 5px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.attribute-pill:hover { border-color: var(--green-light); background: rgba(42, 90, 42, 0.32); }
+.attribute-pill.selected {
+  background: rgba(42, 90, 42, 0.5);
+  border-color: #60a060;
+  color: #a8e0a8;
+}
+.attribute-pill.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.attribute-pill .pill-cat {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.defaut-pill {
+  background: rgba(90, 20, 20, 0.18);
+  border: 1px solid rgba(90, 20, 20, 0.45);
+}
+.defaut-pill:hover { border-color: var(--red-light); background: rgba(90, 20, 20, 0.32); }
+.defaut-pill.selected {
+  background: rgba(90, 20, 20, 0.5);
+  border-color: #e05050;
+  color: #f0a0a0;
+}
+
+.cat-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.cat-filter button {
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--surface2);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.cat-filter button:hover { border-color: var(--gold-dark); color: var(--gold-light); }
+.cat-filter button.active { background: var(--surface3); color: var(--gold); border-color: var(--border-gold); }
+
+/* Description box (expandable) */
+.attribute-desc {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 3px solid var(--gold-dark);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.attribute-desc strong { color: var(--gold-light); font-style: normal; }
+
+/* ============================================================
+   ÉQUIPEMENT
+   ============================================================ */
+.equip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 700px) { .equip-grid { grid-template-columns: 1fr; } }
+
+.equip-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 14px;
+}
+.equip-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+.stat-badge {
+  background: var(--surface3);
+  border: 1px solid var(--border-gold);
+  border-radius: 2px;
+  padding: 8px;
+  text-align: center;
+}
+.stat-badge .stat-val {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+.stat-badge .stat-lbl {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-top: 2px;
+}
+.stat-badge.negative .stat-val { color: #e06060; }
+.stat-badge.positive .stat-val { color: #60c060; }
+
+/* Liste d'armes équipées */
+.weapons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.weapon-entry {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+}
+.weapon-entry .w-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+.weapon-entry .w-info {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+.weapon-entry .w-dmg {
+  font-size: 0.85rem;
+  color: var(--gold);
+  text-align: right;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+}
+.weapon-entry .w-remove {
+  background: none;
+  border: none;
+  color: var(--red);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 4px;
+  transition: color 0.2s;
+}
+.weapon-entry .w-remove:hover { color: #ff6060; }
+
+.add-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.add-row select { flex: 1; min-width: 160px; }
+
+.empty-state {
+  color: var(--text-dim);
+  font-style: italic;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 12px 0;
+}
+
+/* ============================================================
+   STATS DÉRIVÉES
+   ============================================================ */
+.derived-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+}
+.derived-card {
+  background: var(--surface3);
+  border: 1px solid var(--border-gold);
+  border-top: 2px solid var(--gold);
+  border-radius: 2px;
+  padding: 14px;
+  text-align: center;
+}
+.derived-card .d-val {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1;
+}
+.derived-card .d-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+.derived-card .d-formula {
+  font-size: 0.72rem;
+  color: var(--text-mute);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.attack-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.attack-table th {
+  background: var(--surface3);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-gold);
+}
+.attack-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.attack-table tr:last-child td { border-bottom: none; }
+.attack-table .penalty { color: var(--warn); font-size: 0.78rem; font-style: italic; }
+
+/* ============================================================
+   FICHE FINALE (look parchemin)
+   ============================================================ */
+#sheet-preview {
+  background: #ffffff;
+  color: #1a1008;
+  border: 1px solid #c0a060;
+  border-radius: 2px;
+  padding: 32px;
+  font-family: 'EB Garamond', serif;
+}
+.sheet-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3a1a08;
+  text-align: center;
+  border-bottom: 2px solid #8b4030;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+.sheet-identity {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #c0a060;
+}
+.sheet-field { display: flex; flex-direction: column; }
+.sheet-field .sf-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #7a5a30;
+  font-family: 'Cinzel', serif;
+  margin-bottom: 2px;
+}
+.sheet-field .sf-val {
+  font-size: 1rem;
+  color: #2a1008;
+  border-bottom: 1px solid #c0a060;
+  min-height: 24px;
+  padding-bottom: 2px;
+}
+.sheet-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: #8b4030;
+  color: #f5ead5;
+  padding: 4px 10px;
+  margin: 16px 0 10px;
+}
+.sheet-skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 20px;
+}
+.sheet-skill-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px dotted #c0a060;
+}
+.sheet-skill-row .ssl-name { flex: 1; font-size: 0.9rem; }
+.sheet-skill-row .ssl-rank {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #3a1a08;
+  min-width: 20px;
+  text-align: center;
+}
+.sheet-skill-row .ssl-specs {
+  font-size: 0.75rem;
+  color: #7a5a30;
+  font-style: italic;
+}
+.sheet-derived {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.sheet-derived-card {
+  border: 1px solid #c0a060;
+  padding: 6px 8px;
+  text-align: center;
+  background: #ffffff;
+}
+.sheet-derived-card .sdc-val {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #3a1a08;
+}
+.sheet-derived-card .sdc-lbl {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7a5a30;
+}
+.sheet-weapons-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.sheet-weapons-table th {
+  background: #8b4030;
+  color: #f5ead5;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 4px 8px;
+  text-align: left;
+}
+.sheet-weapons-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid #c0a060;
+}
+.sheet-weapons-table tr:nth-child(even) td { background: #f7f3eb; }
+
+/* Saut de page entre la page 1 et la page 2 de la fiche */
+.sheet-page-break {
+  margin: 32px 0 24px;
+  border-top: 2px dashed #c0a060;
+  position: relative;
+}
+.sheet-page-break::before {
+  content: '— Page 2 —';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  padding: 0 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #7a5a30;
+}
+/* (les règles d'impression du saut de page sont consolidées dans le bloc @media print final) */
+
+/* ============================================================
+   BOUTONS
+   ============================================================ */
+.btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--red), var(--red-light));
+  color: #f5e8d0;
+  border: 1px solid #c03030;
+}
+.btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, var(--red-light), #cc4040); }
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-dark), #9a7a20);
+  color: #f5e8d0;
+  border: 1px solid var(--border-gold);
+}
+.btn-gold:hover:not(:disabled) { background: linear-gradient(135deg, #9a7a20, var(--gold)); }
+.btn-sm { padding: 6px 14px; font-size: 0.65rem; }
+
+.actions-row {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   INFO BOX (pour conseils, alertes douces)
+   ============================================================ */
+.info-box {
+  background: rgba(201, 168, 76, 0.08);
+  border-left: 3px solid var(--gold);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+.warn-box {
+  background: rgba(224, 128, 48, 0.1);
+  border-left: 3px solid var(--warn);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+.error-box {
+  background: rgba(224, 48, 48, 0.1);
+  border-left: 3px solid var(--error);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 600px) {
+  .form-grid, .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .derived-grid { grid-template-columns: repeat(2, 1fr); }
+  .app-header h1 { font-size: 1.4rem; }
+}
+
+/* ============================================================
+   IMPRESSION : seule la fiche finale est imprimée
+   ============================================================ */
+.print-note {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* ============================================================
+   IMPRESSION — calibré pour tenir sur 2 pages A4
+   ============================================================ */
+@page {
+  size: A4 portrait;
+  margin: 1cm 1.2cm;
+}
+
+@media print {
+  /* Structure : on cache l'éditeur, on n'imprime que la fiche */
+  body { background: white; color: black; font-family: 'EB Garamond', serif; }
+  .app-wrapper { max-width: none; padding: 0; margin: 0; }
+  .tabs, .actions-row, .print-note, .app-header, .panel-title { display: none; }
+  .section { display: none !important; }
+  #section-fiche { display: block !important; }
+  .panel { background: white; border: none; padding: 0; margin: 0; }
+
+  /* Cadre principal : pleine largeur sans bordure */
+  #sheet-preview {
+    border: none;
+    padding: 0;
+    font-size: 9.2pt;
+    line-height: 1.32;
+    color: #000;
+  }
+
+  /* Titre + identité compacts */
+  .sheet-title {
+    font-size: 12pt;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+  }
+  .sheet-identity {
+    gap: 6px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+  }
+  .sheet-field .sf-label { font-size: 6pt; }
+  .sheet-field .sf-val   { font-size: 9pt; min-height: 14px; }
+
+  /* Bandeau de section : plus fin */
+  .sheet-section-title {
+    font-size: 7pt;
+    padding: 2px 8px;
+    margin: 6px 0 3px;
+    page-break-after: avoid;     /* le titre ne se sépare pas de son contenu */
+  }
+
+  /* Compétences : 3 colonnes en print pour gagner de la hauteur */
+  .sheet-skills-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0 14px;
+    page-break-inside: avoid;
+  }
+  .sheet-skill-row {
+    padding: 1px 0;
+    font-size: 8.5pt;
+    border-bottom: 1px dotted #c0a060;
+  }
+  .sheet-skill-row .ssl-rank { font-size: 9pt; min-width: 16px; }
+  .sheet-skill-row .ssl-name { font-size: 8.5pt; }
+  .sheet-skill-row .ssl-specs { font-size: 7pt; }
+
+  /* Valeurs dérivées : 8 cards en 1 ligne (4 col par défaut, on garde) */
+  .sheet-derived {
+    gap: 4px;
+    margin-bottom: 6px;
+    page-break-inside: avoid;
+  }
+  .sheet-derived-card {
+    padding: 3px 4px;
+    border: 1px solid #888;
+  }
+  .sheet-derived-card .sdc-val { font-size: 11pt; }
+  .sheet-derived-card .sdc-lbl { font-size: 6pt; }
+
+  /* Tableau des armes compact */
+  .sheet-weapons-table {
+    font-size: 8.5pt;
+    page-break-inside: avoid;
+  }
+  .sheet-weapons-table th,
+  .sheet-weapons-table td {
+    padding: 2px 5px;
+  }
+
+  /* Listes à descriptions : 2 colonnes en print pour économiser la hauteur */
+  .sheet-qualites-list,
+  .sheet-avantages-list,
+  .sheet-defauts-list {
+    column-count: 2;
+    column-gap: 14px;
+    font-size: 8.2pt;
+    line-height: 1.35;
+    padding-left: 14px;
+  }
+  .sheet-qualites-list li,
+  .sheet-avantages-list li,
+  .sheet-defauts-list li {
+    margin-bottom: 4px;
+    page-break-inside: avoid;
+    break-inside: avoid;          /* évite de couper un avantage en deux colonnes */
+  }
+
+  /* Évite de séparer une section de son contenu */
+  .sheet-block { page-break-inside: avoid; }
+
+  /* Saut de page strict entre page 1 et page 2 */
+  .sheet-page-break {
+    page-break-before: always;
+    border: none;
+    margin: 0;
+    padding: 0;
+    height: 0;
+  }
+  .sheet-page-break::before { display: none; }
+
+  /* Liens 3 colonnes (Alliés/Ennemis/Serments + Maison) : compact */
+  .sheet-section-title + div[style*="grid-template-columns:1fr 1fr 1fr"] {
+    font-size: 8.5pt;
+  }
+
+  /* Le panneau biblio et son overlay ne doivent jamais s'imprimer */
+  .drawer, .drawer-overlay { display: none !important; }
+}
+
+/* ============================================================
+   HEADER — passage en flex pour loger les boutons d'action à droite
+   ============================================================ */
+/* On surcharge le text-align: center hérité par un layout en flex.
+   Les titres restent centrés visuellement par leur propre conteneur. */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  text-align: left; /* la prop centrée d'origine est annulée ici */
+  padding-left: 24px;
+  padding-right: 24px;
+}
+/* Le ::after (ligne dorée décorative) devient un flex item.
+   On lui force largeur 100% pour qu'il s'affiche sur sa propre ligne. */
+.app-header::after {
+  flex-basis: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.app-header-titles {
+  flex: 1 1 auto;
+  text-align: center;
+  min-width: 240px;
+}
+.app-header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   PANNEAU LATÉRAL (DRAWER) — bibliothèque de personnages
+   ============================================================ */
+/* Overlay assombri derrière le panneau, capte le clic pour fermer */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 998;
+  /* Fade-in piloté par la classe is-open */
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.drawer-overlay.is-open {
+  opacity: 1;
+}
+
+/* Panneau coulissant — caché à droite par défaut */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(420px, 92vw);
+  height: 100vh;
+  background: var(--surface, #1d1812);
+  border-left: 1px solid var(--border-gold, #c9a84c);
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  /* Translation initiale : hors-écran. La classe is-open le ramène. */
+  transform: translateX(100%);
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.drawer.is-open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border-gold, #c9a84c);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.drawer-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  color: var(--gold-light, #e8c97c);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+.drawer-close {
+  background: transparent;
+  border: 1px solid var(--border-gold, #c9a84c);
+  color: var(--gold-light, #e8c97c);
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.drawer-close:hover {
+  background: rgba(201, 168, 76, 0.15);
+}
+
+.drawer-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 12px 16px;
+}
+
+.drawer-footer {
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--border-gold, #c9a84c);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Liste des personnages dans le drawer */
+.biblio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.biblio-empty {
+  color: var(--text-dim, #a8a08a);
+  font-style: italic;
+  text-align: center;
+  padding: 24px 8px;
+  line-height: 1.6;
+}
+.biblio-item {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border, #4a3f2a);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+/* Surligne l'entrée actuellement chargée pour un repère visuel */
+.biblio-item.is-current {
+  border-color: var(--gold, #c9a84c);
+  background: rgba(201, 168, 76, 0.08);
+}
+.biblio-item-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  color: var(--gold-light, #e8c97c);
+  margin: 0 0 4px;
+  word-break: break-word;
+}
+.biblio-item-date {
+  font-size: 0.75rem;
+  color: var(--text-dim, #a8a08a);
+  margin-bottom: 8px;
+}
+.biblio-item-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.biblio-item-actions button {
+  font-size: 0.78rem;
+  padding: 4px 8px;
+}

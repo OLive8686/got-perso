@@ -1,0 +1,34 @@
+# =====================================================
+# Fichiers à NE PAS publier sur GitHub
+# =====================================================
+
+# --- Contenus sous copyright (livre des règles JdR) ---
+# Ces PDFs restent en local pour ton usage perso uniquement.
+# Ne JAMAIS les pousser sur un repo public (violation de copyright).
+*.pdf
+
+# --- Notes de travail privées ---
+RAPPORT-RECOUPEMENT-REGLES.md
+
+# --- Générateur IA séparé (non intégré pour le moment) ---
+# Inutile sur Pages tant qu'on n'a pas géré la clé API côté utilisateur.
+generateur-ia.html
+generateur_fiches_got.html
+
+# --- Fichiers système / IDE ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Logs et temporaires ---
+*.log
+npm-debug.log*
+.cache/
+
+# --- Exports locaux de la bibliothèque (sauvegardes perso) ---
+got-perso-biblio-*.json
