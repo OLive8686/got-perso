@@ -754,6 +754,12 @@ const UI = {
     const armure   = ARMURES.find(a => a.id === d.armure);
     const bouclier = BOUCLIERS.find(b => b.id === d.bouclier);
     const pd       = budgetPD(d);
+    // PD restants = PD de départ + 1 par défaut volontaire − 1 par avantage acheté.
+    // Plancher 0 pour ne pas afficher de nombre négatif (l'éditeur signale
+    // déjà un budget dépassé côté onglet IV).
+    const pdRestants = Math.max(0,
+      pd + (d.defauts?.length || 0) - (d.avantages?.length || 0)
+    );
 
     // ============== PAGE 1 ==============
     const page1 = `
@@ -807,13 +813,13 @@ const UI = {
         </div>
       </div>
 
-      <div class="sheet-section-title">Points de Destinée (départ : ${pd})</div>
+      <div class="sheet-section-title">Points de Destinée (restants : ${pdRestants} / ${pd})</div>
       <div style="display:flex; gap:6px; padding:6px 0; flex-wrap:wrap">
-        ${[...Array(Math.max(8, pd))].map((_, i) => `
+        ${[...Array(Math.max(8, pd, pdRestants))].map((_, i) => `
           <div style="width:18px; height:18px; border:2px solid #8b4030; border-radius:2px;
-                      background:${i < pd ? '#8b4030' : 'transparent'};
+                      background:${i < pdRestants ? '#8b4030' : 'transparent'};
                       display:flex; align-items:center; justify-content:center;
-                      color:#fff; font-size:13px; font-weight:bold; line-height:1">${i < pd ? '✦' : ''}</div>
+                      color:#fff; font-size:13px; font-weight:bold; line-height:1">${i < pdRestants ? '✦' : ''}</div>
         `).join('')}
       </div>
 
