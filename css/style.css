@@ -721,12 +721,10 @@ body {
 /* ============================================================
    FICHE FINALE (look parchemin)
    ============================================================ */
+/* Note : le style principal de #sheet-preview est défini plus bas
+   (section "APERÇU PAPIER") avec dimensions A4. Ici on garde seulement
+   la famille de police de base. */
 #sheet-preview {
-  background: #ffffff;
-  color: #1a1008;
-  border: 1px solid #c0a060;
-  border-radius: 2px;
-  padding: 32px;
   font-family: 'EB Garamond', serif;
 }
 .sheet-title {
@@ -1077,6 +1075,37 @@ body {
 
   /* Le panneau biblio et son overlay ne doivent jamais s'imprimer */
   .drawer, .drawer-overlay { display: none !important; }
+
+  /* En impression, on retire le saut de page strict : on préfère laisser
+     le navigateur couper naturellement plutôt que de forcer une page 2
+     vide ou un débordement vers une page 3.
+     Si la fiche tient sur 2 pages avec le saut strict, on peut le remettre. */
+  .sheet-page-break {
+    page-break-before: auto;
+    break-before: auto;
+  }
+
+  /* En impression : annule l'effet "papier" de l'aperçu écran (largeur fixe,
+     ombre, marges intérieures) — la page A4 du navigateur fait déjà le cadre. */
+  #sheet-preview {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    background: white;
+    font-size: 9.2pt;
+    line-height: 1.32;
+    color: #000;
+  }
+  /* À l'impression, le séparateur visuel "Page 2" doit disparaitre */
+  .sheet-page-break::before { display: none; }
+  .sheet-page-break {
+    border: none;
+    background: none;
+    height: 0;
+    margin: 0;
+  }
 }
 
 /* ============================================================
@@ -1106,10 +1135,100 @@ body {
   text-align: center;
   min-width: 240px;
 }
+/* Conteneur des actions header : empile la rangée de boutons et,
+   en dessous, le libellé de la fiche en cours, aligné à droite. */
 .app-header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+/* Rangée des trois boutons (Enregistrer, Bibliothèque, Nouveau) */
+.app-header-buttons {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  justify-content: flex-end;
+}
+/* Libellé "Fiche en cours : …" sous les boutons, aligné à droite.
+   Discret mais lisible — sert juste à rappeler quel perso est édité. */
+.biblio-current-label {
+  margin: 0;
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--gold-light, #e8c97c);
+  letter-spacing: 0.02em;
+  text-align: right;
+}
+.biblio-current-label::before {
+  content: '✦ ';
+  color: var(--gold, #c9a84c);
+}
+
+/* ============================================================
+   ONGLET FICHE — mode lecture épuré
+   ============================================================ */
+/* Quand la section "Fiche Finale" est active, on cache :
+   - les onglets I-VII (navigation)
+   - le bloc d'actions du header (Enregistrer / Bibliothèque / Nouveau + label)
+   pour que l'écran ressemble vraiment à une feuille de personnage prête à imprimer.
+   Le titre LE TRÔNE DE FER reste visible (repère identitaire).
+   Utilise :has() — supporté Chrome 105+, Safari 15.4+, Firefox 121+. */
+.app-wrapper:has(#section-fiche.active) .tabs,
+.app-wrapper:has(#section-fiche.active) .app-header-actions {
+  display: none;
+}
+
+/* ============================================================
+   APERÇU PAPIER — la fiche à l'écran ressemble à une feuille A4
+   ============================================================ */
+/* On encadre la zone de fiche en "papier" : largeur 21 cm, fond blanc,
+   marges intérieures équivalentes au @page print, ombre pour l'effet feuille.
+   Hors @media print : c'est l'aperçu à l'écran. */
+#sheet-preview {
+  background: #ffffff;
+  color: #1a1a1a;
+  width: 21cm;
+  max-width: 100%;
+  margin: 16px auto;
+  padding: 1cm 1.2cm;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid #c0a060;
+  box-sizing: border-box;
+}
+
+/* Séparateur visuel de "page 2" à l'écran (à l'impression, .sheet-page-break
+   est invisible et ne force plus de saut — voir @media print).
+   On reproduit l'effet d'une rupture de feuille. */
+.sheet-page-break {
+  display: block;
+  position: relative;
+  height: 36px;
+  margin: 24px -1.2cm; /* déborde sur les marges intérieures pour traverser la feuille */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.04) 0%,
+    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0.04) 100%
+  );
+  border-top: 1px dashed #b0976a;
+  border-bottom: 1px dashed #b0976a;
+}
+.sheet-page-break::before {
+  content: '— Page 2 —';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 2px 14px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  color: #8b4030;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid #b0976a;
 }
 
 /* ============================================================

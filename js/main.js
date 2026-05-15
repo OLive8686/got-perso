@@ -80,32 +80,59 @@
           if (drawer && !drawer.hidden) this.fermer();
         }
       });
+
+      // Premier affichage du libellé « Fiche en cours » (rien au démarrage
+      // tant que l'utilisateur n'a pas chargé ou enregistré une fiche)
+      this._majTitreCourant();
+    },
+
+    // -----------------------------------------------------------
+    // Met à jour le libellé "Fiche en cours : ..." dans le header.
+    // Appelée après chaque changement d'identité de la fiche éditée
+    // (chargement, enregistrement, renommage, nouveau).
+    // -----------------------------------------------------------
+    _majTitreCourant() {
+      const el = document.getElementById('biblio-current-label');
+      if (!el) return;
+      const id = State.getIdCourant();
+      if (id === null) {
+        el.hidden = true;
+        el.textContent = '';
+        return;
+      }
+      const entree = State.listerBiblio().find(e => e.id === id);
+      if (!entree) {
+        el.hidden = true;
+        el.textContent = '';
+        return;
+      }
+      // Sécurité XSS : on injecte le nom via textContent uniquement
+      el.textContent = `Fiche en cours : « ${entree.nom} »`;
+      el.hidden = false;
     },
 
     // -----------------------------------------------------------
     // Bouton "Enregistrer" : sauve le perso courant dans la biblio
     // -----------------------------------------------------------
-    // Si on a chargé un perso existant (idCourant non null) → mise à jour
-    // silencieuse. Sinon → demande un nom (par défaut le champ "nom" du perso).
+    // Par défaut, le nom de l'entrée biblio suit le champ "Nom" du perso.
+    // Si l'utilisateur a renommé manuellement l'entrée via le bouton ✏️,
+    // ce nom manuel est respecté et n'est plus écrasé (flag nomManuel
+    // posé côté State.renommerDansBiblio).
     enregistrer() {
-      let nom;
       const idCourant = State.getIdCourant();
+      State.sauverDansBiblio(null); // null = laisse State décider (suit data.nom ou garde nom manuel)
 
-      if (idCourant !== null) {
-        // Mise à jour silencieuse
-        State.sauverDansBiblio(null); // null = garde le nom existant
-        this._toast('💾 Personnage mis à jour dans la bibliothèque.');
+      // Toast contextuel : nouvelle entrée vs mise à jour
+      const apres = State.listerBiblio().find(e => e.id === State.getIdCourant());
+      const nomFinal = apres?.nom || 'Sans nom';
+      if (idCourant === null) {
+        this._toast(`💾 « ${nomFinal} » ajouté à la bibliothèque.`);
       } else {
-        // Nouvelle entrée : demande un nom
-        const nomDefaut = State.data?.nom?.trim() || 'Sans nom';
-        nom = prompt('Nom de la sauvegarde :', nomDefaut);
-        if (nom === null) return; // utilisateur a annulé
-        nom = nom.trim() || 'Sans nom';
-        State.sauverDansBiblio(nom);
-        this._toast(`💾 « ${nom} » ajouté à la bibliothèque.`);
+        this._toast(`💾 « ${nomFinal} » mis à jour.`);
       }
 
-      this._rendreListe(); // rafraîchit le panneau s'il est ouvert
+      this._rendreListe();      // rafraîchit le panneau s'il est ouvert
+      this._majTitreCourant();  // met à jour le label "Fiche en cours" du header
     },
 
     // -----------------------------------------------------------
@@ -115,6 +142,7 @@
       // Confirmation pour éviter de perdre le travail en cours par erreur
       if (!confirm('Démarrer un nouveau personnage ? Le travail en cours sera perdu (sauf si déjà enregistré dans la bibliothèque).')) return;
       State.nouveauPersonnage();
+      this._majTitreCourant();  // efface le label (id courant remis à null)
       this._toast('✨ Nouveau personnage initialisé.');
     },
 
@@ -215,6 +243,7 @@
       switch (action) {
         case 'charger':
           State.chargerDepuisBiblio(p.id);
+          this._majTitreCourant();   // affiche le nom dans le header
           this._toast(`📂 « ${p.nom} » chargé.`);
           this.fermer();
           break;
@@ -223,6 +252,8 @@
           if (nouveau !== null && nouveau.trim() !== '') {
             State.renommerDansBiblio(p.id, nouveau.trim());
             this._rendreListe();
+            // Si on a renommé l'entrée actuellement chargée, on rafraîchit le header
+            if (State.getIdCourant() === p.id) this._majTitreCourant();
           }
           break;
         }
@@ -235,6 +266,9 @@
           if (confirm(`Supprimer définitivement « ${p.nom} » ?\nCette action est irréversible.`)) {
             State.supprimerDeBiblio(p.id);
             this._rendreListe();
+            // Si l'entrée supprimée était la fiche en cours, le label doit disparaître
+            // (State.supprimerDeBiblio met _idCourant à null dans ce cas)
+            this._majTitreCourant();
             this._toast(`🗑️ « ${p.nom} » supprimé.`);
           }
           break;

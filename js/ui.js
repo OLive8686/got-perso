@@ -989,11 +989,16 @@ const UI = {
   },
 
   // Détail des qualités d'armes : pour chaque qualité unique apparaissant
-  // sur les armes équipées, on affiche son nom + sa description.
+  // sur les armes équipées, on affiche son nom + sa description + la liste
+  // des armes du personnage qui portent cette qualité (pour qu'on voie d'un
+  // coup d'œil à quelle(s) arme(s) chaque qualité se rapporte).
   _renderQualitesArmes(d) {
     if (!d.armes.length) return '';
-    // Collecter les qualités uniques (avec valeur si paramétrée)
-    const vues = new Map(); // cle = "id" ou "id:valeur" pour différencier
+
+    // Map clé → { def, valeur, armes: Set<string> }
+    // La clé "id" ou "id:valeur" différencie par ex. "Puissante" et "Puissante 2"
+    // si jamais deux armes portent la même qualité avec des valeurs différentes.
+    const vues = new Map();
     d.armes.forEach(id => {
       const a = ARMES.find(x => x.id === id);
       if (!a) return;
@@ -1001,20 +1006,28 @@ const UI = {
         const cle = q.valeur !== undefined ? `${q.id}:${q.valeur}` : q.id;
         if (!vues.has(cle)) {
           const def = QUALITES[q.id];
-          if (def) vues.set(cle, { def, valeur: q.valeur });
+          if (!def) return;
+          vues.set(cle, { def, valeur: q.valeur, armes: new Set() });
         }
+        // On rattache l'arme courante à cette qualité (Set → dédoublonne
+        // automatiquement si la même arme est équipée plusieurs fois)
+        vues.get(cle)?.armes.add(a.nom);
       });
     });
     if (vues.size === 0) return '';
-    const items = [...vues.values()].map(({ def, valeur }) => {
+
+    const items = [...vues.values()].map(({ def, valeur, armes }) => {
       const titre = valeur !== undefined ? `${def.nom} ${valeur}` : def.nom;
+      const listeArmes = [...armes].join(', ');
       return `
         <li style="margin-bottom:6px">
           <strong>${titre}</strong>
+          <span style="color:#5a3a1a; font-size:0.86em; font-style:italic"> — ${listeArmes}</span>
           <div style="color:#3a2010; font-size:0.88em; margin-top:2px">${def.description}</div>
         </li>
       `;
     }).join('');
+
     return `
       <div style="margin-top:10px; padding-top:8px; border-top:1px dashed #c0a060">
         <div style="font-size:0.78rem; color:#7a5a30; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px">Qualités d'armes en jeu</div>

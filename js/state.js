@@ -327,7 +327,16 @@ const State = {
    * Sauvegarde le personnage courant dans la bibliothèque.
    * Si _idCourant est défini → met à jour l'entrée existante.
    * Sinon → crée une nouvelle entrée.
-   * @param {string} nom Nom à donner à la sauvegarde
+   *
+   * Règle de nommage :
+   *  - Si `nom` est fourni (non null), on l'applique ET on pose le flag
+   *    `nomManuel: true` (signifie : l'utilisateur a explicitement choisi
+   *    un nom, on ne le synchronise plus avec data.nom).
+   *  - Si `nom` est null/omis → le nom de l'entrée suit `data.nom` SAUF
+   *    si l'entrée existante a déjà `nomManuel: true` (auquel cas on garde
+   *    le nom manuel pour ne pas écraser un choix conscient de l'utilisateur).
+   *
+   * @param {string|null} nom Nom explicite, ou null pour utiliser data.nom
    * @returns {number} l'id de l'entrée (utile pour mémoriser _idCourant)
    */
   sauverDansBiblio(nom) {
@@ -335,12 +344,26 @@ const State = {
     const maintenant = new Date().toISOString();
     // Snapshot complet (deep copy) du state actuel pour découpler de l'édition
     const snapshot = JSON.parse(JSON.stringify(this.data));
+    const nomPerso = (this.data?.nom || '').trim() || 'Sans nom';
 
     if (this._idCourant !== null) {
       // Mise à jour d'une entrée existante
       const idx = biblio.findIndex(e => e.id === this._idCourant);
       if (idx >= 0) {
-        biblio[idx] = { id: this._idCourant, nom: nom || biblio[idx].nom, date: maintenant, data: snapshot };
+        const existant   = biblio[idx];
+        const nomManuel  = nom !== null && nom !== undefined ? true : (existant.nomManuel === true);
+        // Si nom explicite → on le prend. Sinon : nom manuel figé → garder l'existant.
+        // Sinon → suivre data.nom (comportement par défaut).
+        const nouveauNom = (nom !== null && nom !== undefined)
+          ? nom
+          : (existant.nomManuel ? existant.nom : nomPerso);
+        biblio[idx] = {
+          id:        this._idCourant,
+          nom:       nouveauNom,
+          nomManuel,
+          date:      maintenant,
+          data:      snapshot,
+        };
         this._ecrireBiblio(biblio);
         return this._idCourant;
       }
@@ -349,7 +372,14 @@ const State = {
 
     // Création d'une nouvelle entrée
     const nouvelId = Date.now();
-    biblio.push({ id: nouvelId, nom: nom || 'Sans nom', date: maintenant, data: snapshot });
+    const nomManuel = nom !== null && nom !== undefined; // créé avec un nom explicite ?
+    biblio.push({
+      id:        nouvelId,
+      nom:       nom || nomPerso,
+      nomManuel,
+      date:      maintenant,
+      data:      snapshot,
+    });
     this._ecrireBiblio(biblio);
     this._idCourant = nouvelId;
     return nouvelId;
@@ -389,12 +419,15 @@ const State = {
 
   /**
    * Renomme une entrée sans changer ses données.
+   * Pose le flag `nomManuel: true` pour que ce nom ne soit plus écrasé
+   * automatiquement par data.nom lors des sauvegardes suivantes.
    */
   renommerDansBiblio(id, nouveauNom) {
     const biblio = this._lireBiblio();
     const entree = biblio.find(e => e.id === id);
     if (!entree) return false;
     entree.nom = nouveauNom || entree.nom;
+    entree.nomManuel = true;
     entree.date = new Date().toISOString();
     this._ecrireBiblio(biblio);
     return true;

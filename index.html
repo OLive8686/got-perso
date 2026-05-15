@@ -18,11 +18,16 @@
       <h1>Le Trône de Fer</h1>
       <p>Créateur de Fiche de Personnage — Règles officielles JdR</p>
     </div>
-    <!-- Boutons d'action globaux : sauvegarde et bibliothèque de personnages -->
+    <!-- Boutons d'action globaux + libellé de la fiche en cours dessous -->
     <div class="app-header-actions">
-      <button class="btn btn-gold btn-sm" id="btn-enregistrer" title="Sauvegarder le personnage courant">💾 Enregistrer</button>
-      <button class="btn btn-gold btn-sm" id="btn-biblio"      title="Ouvrir la bibliothèque">📂 Bibliothèque</button>
-      <button class="btn btn-gold btn-sm" id="btn-nouveau"     title="Nouveau personnage">✨ Nouveau</button>
+      <div class="app-header-buttons">
+        <button class="btn btn-gold btn-sm" id="btn-enregistrer" title="Sauvegarder le personnage courant">💾 Enregistrer</button>
+        <button class="btn btn-gold btn-sm" id="btn-biblio"      title="Ouvrir la bibliothèque">📂 Bibliothèque</button>
+        <button class="btn btn-gold btn-sm" id="btn-nouveau"     title="Nouveau personnage">✨ Nouveau</button>
+      </div>
+      <!-- Libellé dynamique : nom de l'entrée actuellement chargée depuis la bibliothèque.
+           Reste vide tant qu'aucun perso n'a été enregistré/chargé. -->
+      <p class="biblio-current-label" id="biblio-current-label" hidden></p>
     </div>
   </header>
 
