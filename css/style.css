@@ -960,10 +960,13 @@ body {
 }
 
 @media print {
-  /* Structure : on cache l'éditeur, on n'imprime que la fiche */
+  /* Structure : on cache l'éditeur, on n'imprime que la fiche.
+     !important nécessaire car .app-header est aussi défini en flex
+     plus bas dans le fichier (priorité de la cascade). */
   body { background: white; color: black; font-family: 'EB Garamond', serif; }
   .app-wrapper { max-width: none; padding: 0; margin: 0; }
-  .tabs, .actions-row, .print-note, .app-header, .panel-title { display: none; }
+  .tabs, .actions-row, .print-note, .panel-title { display: none !important; }
+  .app-header { display: none !important; }
   .section { display: none !important; }
   #section-fiche { display: block !important; }
   .panel { background: white; border: none; padding: 0; margin: 0; }

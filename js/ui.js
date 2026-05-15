@@ -905,27 +905,28 @@ const UI = {
       </div>
       ${d.portrait ? `<div style="margin-top:8px; font-size:0.92rem; line-height:1.5"><strong>Portrait :</strong> ${d.portrait}</div>` : ''}
 
-      <div class="sheet-section-title">Traits Distinctifs &amp; Habitudes</div>
-      <div style="font-size:0.92rem; line-height:1.6">
-        ${d.traits    ? `<div><strong>Traits :</strong> ${d.traits}</div>`     : ''}
-        ${d.habitudes ? `<div><strong>Habitudes :</strong> ${d.habitudes}</div>` : ''}
-        ${(!d.traits && !d.habitudes) ? '<div style="font-style:italic; color:#7a5a30">— vide —</div>' : ''}
-      </div>
+      ${(d.traits || d.habitudes) ? `
+        <div class="sheet-section-title">Traits Distinctifs &amp; Habitudes</div>
+        <div style="font-size:0.92rem; line-height:1.6">
+          ${d.traits    ? `<div><strong>Traits :</strong> ${d.traits}</div>`     : ''}
+          ${d.habitudes ? `<div><strong>Habitudes :</strong> ${d.habitudes}</div>` : ''}
+        </div>
+      ` : ''}
 
-      <div class="sheet-section-title">Serviteurs</div>
-      <div style="font-size:0.92rem; line-height:1.6; min-height:40px">
-        ${d.serviteurs || '<span style="font-style:italic; color:#7a5a30">— aucun —</span>'}
-      </div>
+      ${d.serviteurs ? `
+        <div class="sheet-section-title">Serviteurs</div>
+        <div style="font-size:0.92rem; line-height:1.6">${d.serviteurs}</div>
+      ` : ''}
 
-      <div class="sheet-section-title">Équipement Supplémentaire</div>
-      <div style="font-size:0.92rem; line-height:1.6; min-height:40px">
-        ${d.equipement_libre || '<span style="font-style:italic; color:#7a5a30">— vide —</span>'}
-      </div>
+      ${d.equipement_libre ? `
+        <div class="sheet-section-title">Équipement Supplémentaire</div>
+        <div style="font-size:0.92rem; line-height:1.6">${d.equipement_libre}</div>
+      ` : ''}
 
-      <div class="sheet-section-title">Blessures</div>
-      <div style="font-size:0.92rem; line-height:1.6; min-height:40px">
-        ${d.blessures_notes || '<span style="font-style:italic; color:#7a5a30">— aucune —</span>'}
-      </div>
+      ${d.blessures_notes ? `
+        <div class="sheet-section-title">Blessures</div>
+        <div style="font-size:0.92rem; line-height:1.6">${d.blessures_notes}</div>
+      ` : ''}
 
       ${(d.histoire || d.objectif || d.motivation || d.vertu || d.vice) ? `
         <div class="sheet-section-title">Histoire Personnelle</div>
@@ -945,12 +946,14 @@ const UI = {
         <div><div style="font-weight:600; color:#7a5a30; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px">Serments</div>${d.serments || '<span style="font-style:italic; color:#7a5a30">—</span>'}</div>
       </div>
 
-      <div class="sheet-section-title">Maison — Armoiries / Portrait / Devise</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; font-size:0.9rem; line-height:1.5">
-        <div><div style="font-weight:600; color:#7a5a30; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px">Armoiries</div>${d.armoiries || '<span style="font-style:italic; color:#7a5a30">—</span>'}</div>
-        <div><div style="font-weight:600; color:#7a5a30; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px">Portrait</div>${d.portrait || '<span style="font-style:italic; color:#7a5a30">—</span>'}</div>
-        <div><div style="font-weight:600; color:#7a5a30; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px">Devise</div>${d.devises || '<span style="font-style:italic; color:#7a5a30">—</span>'}</div>
-      </div>
+      ${(d.armoiries || d.portrait || d.devises) ? `
+        <div class="sheet-section-title">Maison — Armoiries / Portrait / Devise</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; font-size:0.9rem; line-height:1.5">
+          ${d.armoiries ? `<div><div style="font-weight:600; color:#7a5a30; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px">Armoiries</div>${d.armoiries}</div>` : ''}
+          ${d.portrait  ? `<div><div style="font-weight:600; color:#7a5a30; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px">Portrait</div>${d.portrait}</div>`   : ''}
+          ${d.devises   ? `<div><div style="font-weight:600; color:#7a5a30; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px">Devise</div>${d.devises}</div>`     : ''}
+        </div>
+      ` : ''}
 
       ${d.avantages.length > 0 ? `
         <div class="sheet-section-title">Avantages</div>
